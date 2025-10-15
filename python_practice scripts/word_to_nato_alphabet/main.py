@@ -10,6 +10,10 @@ while translate_on:
     if user_input == "EXIT":
         translate_on = False
     else:
-        translated_word = [nato_dict[letter] for letter in user_input]
-        print(translated_word)
+        try:
+            translated_word = [nato_dict[letter] for letter in user_input]
+        except KeyError:
+            print("Sorry, only letters in the alphabet, please.")
+        else:
+            print(translated_word)
 

@@ -44,9 +44,16 @@ daily_closing = [value for (key, value) in daily_stock.items()]
 yesterdays_close = daily_closing[0]["4. close"]
 day_before_yesterday_close = daily_closing[1]["4. close"]
 
-difference_percentage = round((abs(float(yesterdays_close) - float(day_before_yesterday_close)) / float(day_before_yesterday_close)) * 100, 2)
+difference = float(yesterdays_close) - float(day_before_yesterday_close)
+up_or_down = None
+if difference > 0:
+    up_or_down = "🔺"
+else:
+    up_or_down = "🔻"
 
-if difference_percentage > 1:
+difference_percentage = round((abs(difference) / float(day_before_yesterday_close)) * 100, 2)
+
+if difference_percentage > 5:
     news_response = requests.get(NEWS_ENDPOINT, params=news_parameters)
     news_response.raise_for_status()
 
@@ -55,7 +62,7 @@ if difference_percentage > 1:
     top_three_news = news_articles[:3]
 
     formatted_articles_sms = [
-        f"\n{STOCK_NAME}: {difference_percentage}%\nHeadline: {news['title']}.\nBrief: {news['description']}" for news in
+        f"\n{STOCK_NAME}: {up_or_down}{difference_percentage}%\nHeadline: {news['title']}.\nBrief: {news['description']}" for news in
         top_three_news]
 
     client = Client(account_sid, auth_token)

@@ -22,7 +22,7 @@ sleep(1)
 clicker_on = True
 cookie_button = driver.find_element(By.ID, value="bigCookie")
 
-game_time = time() + 60 * 1
+game_time = time() + 60 * 3
 shopping_time = time() + 5
 
 while clicker_on:
